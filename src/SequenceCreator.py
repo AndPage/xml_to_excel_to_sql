@@ -24,17 +24,15 @@ class SequenceCreator:
 
     def setAllTablesWithoutTarget(self):
         rTarget = list({d["target"] for d in self.relations})
-        allTablesWithoutTarget = list(set(self.tableIds) - set(rTarget))
-        self.setNextLevel(allTablesWithoutTarget)
+        self.setNextLevel(list(set(self.tableIds) - set(rTarget)))
         if len(self.tableIds):
             self.setAllTablesWithoutTarget()
-
 
     def setNextLevel(self, tableIds: list = []):
         if len(tableIds):
             self.tableIdSequence[self.level] = tableIds
             self.tableIds = list(set(self.tableIds) - set(tableIds))
-            self.relations = [d for d in self.relations if d['source'] not in tableIds]
+            self.relations = [d for d in self.relations if d["source"] not in tableIds]
             self.level += 1
 
     def getSequence(self) -> dict:
