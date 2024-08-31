@@ -5,8 +5,12 @@ class SequenceCreator:
     level: int = 0
 
     def __init__(self, dictAll: dict) -> None:
-        self.relations = dictAll["relation"]
+        # TODO: relations anpassen (drei elemente in eins vereinen)
+        self.relations = dictAll["relation"]['orthogonalEdgeStyle']
         self.tableIds = [d["id"] for d in dictAll["entity"]["table"]]
+
+        # print(self.relations)
+        # print(self.tableIds)
         self.setSequence()
 
     def setSequence(self):
@@ -23,10 +27,14 @@ class SequenceCreator:
         self.setNextLevel(allTablesWithoutRelations)
 
     def setAllTablesWithoutTarget(self):
-        rTarget = list({d["target"] for d in self.relations})
-        self.setNextLevel(list(set(self.tableIds) - set(rTarget)))
-        if len(self.tableIds):
-            self.setAllTablesWithoutTarget()
+        for i in range(50):
+        # while true:
+            rTarget = list({d["target"] for d in self.relations})
+            # print(rTarget)
+            self.setNextLevel(list(set(self.tableIds) - set(rTarget)))
+            # print(self.tableIds)
+            if not len(self.tableIds):
+                break
 
     def setNextLevel(self, tableIds: list = []):
         if len(tableIds):

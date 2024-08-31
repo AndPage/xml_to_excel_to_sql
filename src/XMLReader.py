@@ -3,12 +3,13 @@ import re
 
 
 class XMLReader:
-    params: list = ["id", "parent", "value", "source", "target"]
+    params: list = ["id", "parent", "source", "target", "style", "value"]
     relation_identifier = "source"
     file_path = None
     tree = None
     root = None
-    parsed_xml: dict = {"entity": {}, "relation": []}
+    parsed_xml: dict = {"entity": {}, "relation": {}}
+    # partialRectangle table rhombus tableRow triangle orthogonalEdgeStyle
 
     def __init__(self, file_path):
         self.file_path = file_path
@@ -29,20 +30,18 @@ class XMLReader:
             if "parent" not in item or item["parent"] == 0:
                 continue
 
-            if self.relation_identifier in item:
-                self.parsed_xml["relation"].append(item)
-                continue
+            firstKey = "entity"
+            if item["style"] in ["rhombus", "triangle", "orthogonalEdgeStyle"]:
+                firstKey = "relation"
 
-            parent_id = item["parent"]
-            if parent_id == 1:
-                parent_id = "table"
-            if parent_id not in self.parsed_xml["entity"]:
-                self.parsed_xml["entity"][parent_id] = []
-            self.parsed_xml["entity"][parent_id].append(item)
+            key = item["style"]
+            if key not in self.parsed_xml[firstKey]:
+                self.parsed_xml[firstKey][key] = []
+            self.parsed_xml[firstKey][key].append(item)
 
     def setByParamName(self, dict: dict, cell, param: str):
         paramValue = cell.get(param)
-        if paramValue is None:
+        if paramValue is None or paramValue == "":
             return
 
         paramValue = self.remove_html_tags(paramValue)
@@ -50,11 +49,17 @@ class XMLReader:
         if paramValue.isnumeric():
             paramValue = int(paramValue)
 
+        if param == "style":
+            paramValue = self.getShape(paramValue)
+
         dict[param] = paramValue
 
     def remove_html_tags(self, text):
         clean = re.compile("<.*?>")
         return re.sub(clean, "", text)
+
+    def getShape(self, string):
+        return re.search(r"(\w+);", string).group(1)
 
     def getParsedXML(self):
         self.parse_xml()
