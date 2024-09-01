@@ -30,16 +30,16 @@ class XMLReader:
             if "parent" not in item or item["parent"] == 0:
                 continue
 
-            firstKey = "entity"
+            first_key = "entity"
             if item["style"] in ["rhombus", "triangle", "orthogonalEdgeStyle"]:
-                firstKey = "relation"
+                first_key = "relation"
 
             key = item["style"]
-            if key not in self.parsed_xml[firstKey]:
-                self.parsed_xml[firstKey][key] = []
-            self.parsed_xml[firstKey][key].append(item)
+            if key not in self.parsed_xml[first_key]:
+                self.parsed_xml[first_key][key] = []
+            self.parsed_xml[first_key][key].append(item)
 
-    def setByParamName(self, dict: dict, cell, param: str):
+    def setByParamName(self, item: dict, cell, param: str):
         paramValue = cell.get(param)
         if paramValue is None or paramValue == "":
             return
@@ -52,7 +52,7 @@ class XMLReader:
         if param == "style":
             paramValue = self.getShape(paramValue)
 
-        dict[param] = paramValue
+        item[param] = paramValue
 
     def remove_html_tags(self, text):
         clean = re.compile("<.*?>")
