@@ -1,6 +1,3 @@
-from six import print_
-
-
 class RelationsFormatter:
     tables: list = []
     tableRow: list = []
@@ -13,8 +10,17 @@ class RelationsFormatter:
         self.tableRow = all_dict["entity"]['tableRow']
         self.partialRectangle = all_dict["entity"]['partialRectangle']
 
-        raw_relations = self.get_raw_relations(all_dict["relation"])
-        self.relations = self.create_relations(raw_relations, all_dict["relation"]['orthogonalEdgeStyle'])
+        if len(all_dict["relation"]) == 1 and 'orthogonalEdgeStyle' in all_dict["relation"]:
+            self.relations = self.get_relations(all_dict["relation"]['orthogonalEdgeStyle'])
+        else:
+            raw_relations = self.get_raw_relations(all_dict["relation"])
+            self.relations = self.create_relations(raw_relations, all_dict["relation"]['orthogonalEdgeStyle'])
+
+    def get_relations(self, relations: dict) -> dict:
+        self.corrected_values(relations, "source")
+        self.corrected_values(relations, "target")
+
+        return relations
 
     @staticmethod
     def get_raw_relations(all_dict: dict) -> list:
@@ -26,17 +32,23 @@ class RelationsFormatter:
             all_source = [o for o in orthogonal if o.get("target") == item["id"]]
             all_target = [o for o in orthogonal if o.get("source") == item["id"]]
             if len(all_source) != 1 or len(all_target) < 1:
-                print(
-                    f"ERROR: the number of arrows are not correct:\nto: {all_source}\nfrom: {all_target}\nitem: {item}\n")
+                print(f"ERROR: the number of arrows are not correct:\n"
+                      f"to: {all_source}\nfrom: {all_target}\nitem: {item}\nrelation is skipped\n")
+                continue
 
-            self.corrected_values(all_source,"source")
-            self.corrected_values(all_target,"target")
+            self.check_cardinality(all_source[0])
+            self.corrected_values(all_source, "source")
+            self.corrected_values(all_target, "target")
             for target in all_target:
                 formatted_relations.append(self.get_item(item, all_source, target))
 
         return formatted_relations
 
-    def corrected_values(self, items,field) -> None:
+    def check_cardinality(self, item):
+        if 'value' not in item or item["value"] == "1":
+            print(f"ERROR: check cardinality, source has to be 1:\nitem: {item}\n")
+
+    def corrected_values(self, items, field) -> None:
         for k, item in enumerate(items):
             id_tables = [i["id"] for i in self.tables]
             if item[field] in id_tables:
@@ -70,7 +82,7 @@ class RelationsFormatter:
 
         return copy_item
 
-    def get_relations(self):
+    def get_formatted_relations(self):
         for i in self.relations:
             print(i)
 

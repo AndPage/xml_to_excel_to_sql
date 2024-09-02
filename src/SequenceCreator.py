@@ -9,7 +9,7 @@ class SequenceCreator:
 
     def __init__(self, dictAll: dict) -> None:
         relation_formatter = RelationsFormatter(dictAll)
-        self.relations = [item for item in relation_formatter.get_relations() if item["source"] != item["target"]]
+        self.relations = [item for item in relation_formatter.get_formatted_relations() if item["source"] != item["target"]]
         self.tableIds = [d["id"] for d in dictAll["entity"]["table"]]
         # for i in dictAll["entity"]["table"]:
         #     print(i)

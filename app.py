@@ -1,6 +1,7 @@
 from src.FileSelectorApp import FileSelectorApp
 from src.XMLReader import XMLReader
 from src.SequenceCreator import SequenceCreator
+from src.DataCreator import DataCreator
 import os
 
 if __name__ == "__main__":
@@ -16,5 +17,8 @@ if __name__ == "__main__":
     sequenceCreator = SequenceCreator(parsed_xml)
     sequenceTableIds = sequenceCreator.getSequence()
     print(sequenceTableIds)
+
+    dataCreator = DataCreator(sequenceTableIds, parsed_xml)
+    data_table = dataCreator.get_table()
 
     print(*range(len(sequenceTableIds)))

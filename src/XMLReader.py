@@ -9,6 +9,7 @@ class XMLReader:
     tree = None
     root = None
     parsed_xml: dict = {"entity": {}, "relation": {}}
+
     # partialRectangle table rhombus tableRow triangle orthogonalEdgeStyle
 
     def __init__(self, file_path):
@@ -59,7 +60,12 @@ class XMLReader:
         return re.sub(clean, "", text)
 
     def getShape(self, string):
-        return re.search(r"(\w+);", string).group(1)
+        shape = re.search(r"(\w+);", string).group(1)
+        if shape == "text":
+            shape = "tableRow"
+        if shape == "swimlane":
+            shape = "table"
+        return shape
 
     def getParsedXML(self):
         self.parse_xml()
@@ -67,7 +73,7 @@ class XMLReader:
 
 
 if __name__ == "__main__":
-    reader = XMLReader("/home/dev/projects/draw_io_to_sql/xml_files/test.drawio.xml")
+    reader = XMLReader("/home/dev/projects/draw_io_to_sql/xml_files/test_snow.drawio.xml")
     reader.load_xml()
     parsed_xml = reader.getParsedXML()
     tab = "  "
