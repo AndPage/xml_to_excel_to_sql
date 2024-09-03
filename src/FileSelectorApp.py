@@ -2,6 +2,7 @@ import os
 import tkinter as tk
 from tkinter import ttk
 
+
 class FileSelectorApp(tk.Tk):
     directory: str = "xml_files"
     selected_file_name: str = ''
@@ -31,6 +32,4 @@ class FileSelectorApp(tk.Tk):
         self.destroy()
 
     def get_selected_file_name(self):
-        return f"{self.directory}/{self.selected_file_name}"
-        
-
+        return self.selected_file_name
