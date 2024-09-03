@@ -4,6 +4,8 @@ import os
 
 class DataToExcel:
     directory: str = "excel_output"
+    prefix:str = "datadictionary_"
+    suffix:str = ".xlsx"
 
     def __init__(self, datasheet,file:str):
         self.path = os.path.abspath(os.getcwd())
@@ -20,7 +22,7 @@ class DataToExcel:
             tables[table_name].append(entry)
 
         # DataFrames in Excel speichern
-        with pd.ExcelWriter(f"{self.path}/{self.directory}/datadictionary_{self.file}.xlsx") as writer:
+        with pd.ExcelWriter(f"{self.path}/{self.directory}/{self.prefix}{self.file}{self.suffix}") as writer:
             for table_name, rows in tables.items():
                 df = pd.DataFrame(rows)
                 df.to_excel(writer, sheet_name=table_name, index=False)
