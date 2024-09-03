@@ -83,7 +83,7 @@ class RelationsFormatter:
         return copy_item
 
     def get_formatted_relations(self):
-        for i in self.relations:
-            print(i)
+        # for i in self.relations:
+        #     print(i)
 
         return self.relations
