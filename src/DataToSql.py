@@ -14,3 +14,4 @@ class DataToSql:
     def execute(self):
         with open(f"{self.path}/{self.directory}/{self.file}{self.suffix}", 'w') as file:
             file.write(self.data_string)
+        print(f"/{self.directory}/{self.file}{self.suffix} SQL-Datei erfolgreich erstellt.")

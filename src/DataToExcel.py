@@ -4,10 +4,10 @@ import os
 
 class DataToExcel:
     directory: str = "excel_output"
-    prefix:str = "datadictionary_"
-    suffix:str = ".xlsx"
+    prefix: str = "datadictionary_"
+    suffix: str = ".xlsx"
 
-    def __init__(self, datasheet,file:str):
+    def __init__(self, datasheet, file: str):
         self.path = os.path.abspath(os.getcwd())
         self.datasheet = datasheet
         self.file = file.removesuffix('.xml')
@@ -27,4 +27,4 @@ class DataToExcel:
                 df = pd.DataFrame(rows)
                 df.to_excel(writer, sheet_name=table_name, index=False)
 
-        print("Excel-Datei erfolgreich erstellt.")
+        print(f"/{self.directory}/{self.prefix}{self.file}{self.suffix} Excel-Datei erfolgreich erstellt.")

@@ -1,4 +1,4 @@
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as eT
 import re
 
 
@@ -10,13 +10,11 @@ class XMLReader:
     root = None
     parsed_xml: dict = {"entity": {}, "relation": {}}
 
-    # partialRectangle table rhombus tableRow triangle orthogonalEdgeStyle
-
     def __init__(self, file_path):
         self.file_path = file_path
 
     def load_xml(self):
-        self.tree = ET.parse(self.file_path)
+        self.tree = eT.parse(self.file_path)
         self.root = self.tree.getroot()
 
     def parse_xml(self):
@@ -24,23 +22,23 @@ class XMLReader:
             raise Exception("XML not loaded. Call load_xml() first.")
 
         for mxCell in self.root.findall(".//mxCell"):
-            item = {}
+            element = {}
             for param in self.params:
-                self.setByParamName(item, mxCell, param)
+                self.setByParamName(element, mxCell, param)
 
-            if "parent" not in item or item["parent"] == 0:
+            if "parent" not in element or element["parent"] == 0:
                 continue
 
             first_key = "entity"
-            if item["style"] in ["rhombus", "triangle", "orthogonalEdgeStyle"]:
+            if element["style"] in ["rhombus", "triangle", "orthogonalEdgeStyle"]:
                 first_key = "relation"
 
-            key = item["style"]
+            key = element["style"]
             if key not in self.parsed_xml[first_key]:
                 self.parsed_xml[first_key][key] = []
-            self.parsed_xml[first_key][key].append(item)
+            self.parsed_xml[first_key][key].append(element)
 
-    def setByParamName(self, item: dict, cell, param: str):
+    def setByParamName(self, element: dict, cell, param: str):
         paramValue = cell.get(param)
         if paramValue is None or paramValue == "":
             return
@@ -53,13 +51,15 @@ class XMLReader:
         if param == "style":
             paramValue = self.getShape(paramValue)
 
-        item[param] = paramValue
+        element[param] = paramValue
 
-    def remove_html_tags(self, text):
+    @staticmethod
+    def remove_html_tags(text):
         clean = re.compile("<.*?>")
         return re.sub(clean, "", text)
 
-    def getShape(self, string):
+    @staticmethod
+    def getShape(string):
         shape = re.search(r"(\w+);", string).group(1)
         if shape == "text":
             shape = "tableRow"

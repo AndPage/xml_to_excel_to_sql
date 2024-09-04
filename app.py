@@ -32,7 +32,7 @@ def excel_workflow():
     # print(data_dict)
 
     sqlCreator = SqlCreator(data_dict)
-    sql_list = sqlCreator.get_sql_list()
+    sql_list = sqlCreator.get_sql_data()
 
     dataToSql = DataToSql(sql_list, selected_file)
     dataToSql.execute()
