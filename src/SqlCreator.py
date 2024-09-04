@@ -19,12 +19,12 @@ class SqlCreator:
                 self.table_special[table] = {'pk': [], 'fk': []}
                 self.start_table(table)
 
-            if row['pk'].lower() == 'x':
+            if row['pk'].lower() == 'x' and 'x' != row["ai"].lower():
                 self.table_special[table]['pk'].append(row['table_row'])
             if row['fk'].lower() != '':
                 self.table_special[table]['fk'].append({'row': row['table_row'], 'ref': row['fk']})
 
-            ai_val = " AUTOINCREMENT" if 'x' == row["ai"].lower() else ''
+            ai_val = " PRIMARY KEY AUTOINCREMENT" if row['pk'].lower() == 'x' and 'x' == row["ai"].lower() else ''
             nn_val = " NOT NULL" if 'x' == row["not_null"].lower() else ''
             self.sql_data.append(f"{self.tab}{row['table_row']} {row['field_type']}{ai_val}{nn_val},")
         self.end_table(table)
@@ -33,18 +33,16 @@ class SqlCreator:
         self.start_table(self.data_list[0]["table"])
 
     def start_table(self, table):
+        self.sql_data.append(f"DROP TABLE if EXISTS {table};")
         self.sql_data.append(f"CREATE TABLE {table}")
         self.sql_data.append(f"(")
 
     def end_table(self, table):
         next_value_available = ","
         sep = next_value_available if len(self.table_special[table]['fk']) else ''
-        if len(self.table_special[table]['pk']) == 0:
-            print(f"ERROR: no PRIMARY KEY for table {table}")
-            return
 
-        pk_keys = self.table_special[table]["pk"][0] if len(self.table_special[table]["pk"]) == 1 else ", ".join(self.table_special[table]["pk"])
-        self.sql_data.append(f"{self.tab}PRIMARY KEY ({pk_keys}){sep}")
+        if len(self.table_special[table]["pk"]) > 1:
+            self.sql_data.append(f"{self.tab}PRIMARY KEY ({", ".join(self.table_special[table]["pk"])}){sep}")
 
         if sep == next_value_available:
             for i, fk in enumerate(self.table_special[table]["fk"]):

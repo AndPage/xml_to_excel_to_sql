@@ -3,7 +3,7 @@ import os
 
 
 class DataToSql:
-    directory: str = "sql_output"
+    directory: str = "files/sql"
     suffix: str = ".sql"
 
     def __init__(self, data, file: str):

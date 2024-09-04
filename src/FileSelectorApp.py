@@ -4,7 +4,7 @@ from tkinter import ttk
 
 
 class FileSelectorApp(tk.Tk):
-    directories = {"XML": "xml_files", "Excel": "excel_input"}
+    directories = {"XML": "files/xml", "Excel": "files/excel"}
     selected_file_name: str = ''
     selected_directory: str = ''
 

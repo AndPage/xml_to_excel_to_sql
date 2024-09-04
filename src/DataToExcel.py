@@ -3,7 +3,7 @@ import os
 
 
 class DataToExcel:
-    directory: str = "excel_output"
+    directory: str = "files/excel"
     prefix: str = "datadictionary_"
     suffix: str = ".xlsx"
 

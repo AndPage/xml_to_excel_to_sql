@@ -9,13 +9,14 @@ class FieldTypeGenerator:
         "INTEGER": [r'_id$', r'_id_dwh$', r'min', r'max', r'count', r'_nr', r'number', r'year', r'month', r'day', ],
         "TEXT": [r'comment', ],
         "REAL": [r'price', r'discount', r'percent', ],
-        "DATE": [r'_at$', r'birthday', r'price', ],
+        "DATE": [r'_at$', r'birthday', ],
         "VARCHAR(10)": [r'postal_code', ],
     }
 
     default_is_not_null = ""
     is_not_null_pattern = [
         r'name$',
+        r'_id$',
     ]
 
     def get_field_type(self, field: str) -> str:
