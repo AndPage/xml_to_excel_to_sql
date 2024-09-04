@@ -12,7 +12,7 @@ class SqlCreator:
         self.table_special[table] = {'pk': [], 'fk': []}
         self.set_start_sql_data()
 
-        for row in self.data_list:
+        for i, row in enumerate(self.data_list):
             if table != row["table"]:
                 self.end_table(table)
                 table = row["table"]
@@ -26,7 +26,8 @@ class SqlCreator:
 
             ai_val = " PRIMARY KEY AUTOINCREMENT" if row['pk'].lower() == 'x' and 'x' == row["ai"].lower() else ''
             nn_val = " NOT NULL" if 'x' == row["not_null"].lower() else ''
-            self.sql_data.append(f"{self.tab}{row['table_row']} {row['field_type']}{ai_val}{nn_val},")
+            sep = "," if table == self.data_list[i + 1]["table"] else ''
+            self.sql_data.append(f"{self.tab}{row['table_row']} {row['field_type']}{ai_val}{nn_val}{sep},")
         self.end_table(table)
 
     def set_start_sql_data(self):

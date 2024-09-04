@@ -73,7 +73,7 @@ class XMLReader:
 
 
 if __name__ == "__main__":
-    reader = XMLReader("/home/dev/projects/draw_io_to_sql/xml_files/test_snow.drawio.xml")
+    reader = XMLReader("/home/dev/projects/draw_io_to_sql/files/xml/test_snow.drawio.xml")
     reader.load_xml()
     parsed_xml = reader.getParsedXML()
     tab = "  "

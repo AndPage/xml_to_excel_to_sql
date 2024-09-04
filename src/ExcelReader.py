@@ -26,7 +26,7 @@ class ExcelReader:
 
 
 if __name__ == "__main__":
-    excelReader = ExcelReader("/home/dev/projects/draw_io_to_sql/excel_input/datadictionary_test.drawio.xlsx")
+    excelReader = ExcelReader("/home/dev/projects/draw_io_to_sql/files/excel/datadictionary_test.drawio.xlsx")
     data_dict = excelReader.get_parsed_excel()
 
     for entry in data_dict:
