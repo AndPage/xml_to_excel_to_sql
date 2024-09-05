@@ -26,7 +26,7 @@ class SqlCreator:
 
             ai_val = " PRIMARY KEY AUTOINCREMENT" if row['pk'].lower() == 'x' and 'x' == row["ai"].lower() else ''
             nn_val = " NOT NULL" if 'x' == row["not_null"].lower() else ''
-            self.sql_data.append(f"{self.tab}{row['table_row']} {row['field_type']}{ai_val}{nn_val},")
+            self.sql_data.append(f"{self.tab}{row['table_row'].split(' ', 1)[0]} {row['field_type']}{ai_val}{nn_val},")
         self.end_table(table)
 
     def start_table(self, table):

@@ -71,7 +71,7 @@ class DataCreator:
                         if cell_str == 'fk':
                             is_fk = True
                             continue
-                        if cell_str in ['fk/pk', 'fk|pk', 'pk/fk', 'pk|fk']:
+                        if cell_str in ['fk / pk', 'pk / fk']:
                             is_pk = True
                             is_fk = True
                             continue
