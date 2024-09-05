@@ -15,7 +15,7 @@ class ExcelReader:
         for sheet_name, df in self.raw_data.items():
             df = df.fillna('')  # Leere Zellen als leere Strings behandeln
             for index, row in df.iterrows():
-                row_dict = {"table": sheet_name}
+                row_dict = {}
                 for col_name in df.columns:
                     row_dict[col_name] = row[col_name]
                 self.parsed_excel.append(row_dict)
