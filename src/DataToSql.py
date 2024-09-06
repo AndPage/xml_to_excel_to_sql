@@ -8,10 +8,14 @@ class DataToSql:
 
     def __init__(self, data, file: str):
         self.data_string = "\n".join(data)
-        self.path = os.path.abspath(os.getcwd())
         self.file = file.removesuffix(DataToExcel.suffix).removeprefix(DataToExcel.prefix)
+        self.full_path_file = f"{os.path.abspath(os.getcwd())}/{self.directory}/{self.file}{self.suffix}"
+        print("DataToSql:")
+        print(os.path.abspath(os.getcwd()))
+        print(self.full_path_file)
 
     def execute(self):
-        with open(f"{self.path}/{self.directory}/{self.file}{self.suffix}", 'w') as file:
+        with open(self.full_path_file, 'w') as file:
             file.write(self.data_string)
-        print(f"/{self.directory}/{self.file}{self.suffix} SQL-Datei erfolgreich erstellt.")
+
+        print(f"{self.full_path_file} SQL-Datei erfolgreich erstellt.")

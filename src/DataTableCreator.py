@@ -1,8 +1,8 @@
-from src.helper.FieldTypeGenerator import FieldTypeGenerator
+from src.helper.DefaultGenerator import DefaultGenerator
 from src.helper.RelationsFormatter import RelationsFormatter
 
 
-class DataCreator:
+class DataTableCreator:
     raw_data = None
     sequence = None
     relations = None
@@ -13,7 +13,7 @@ class DataCreator:
         self.relations = RelationsFormatter(raw_data).get_formatted_relations()
         self.raw_data = raw_data
         self.sequence = sequence
-        self.fTG = FieldTypeGenerator()
+        self.dg = DefaultGenerator()
 
         self.create_data_table()
 
@@ -28,21 +28,16 @@ class DataCreator:
 
             for tableRow in tableRows:
                 table_list = self.table_pk[table_id]
-                pk = self.fTG.true_string if tableRow in table_list["pk"] else ""
-                fk = self.get_fk(tableRow, table_list, table_id)
-                ai = self.fTG.true_string if tableRow in table_list["pk"] and len(
-                    table_list["pk"]) == 1 and "_id" in tableRow.lower() else ""
-                field_type = self.fTG.get_field_type(tableRow)
-                not_null = self.fTG.get_is_not_null(tableRow, ai == self.fTG.true_string)
                 self.data_dictionary_table.append({
                     "table": table_name,
                     "table_row": tableRow,
-                    "field_type": field_type,
-                    "pk": pk,
-                    "ai": ai,
-                    "fk": fk,
-                    "not_null": not_null,
-                    "description": f"{tableRow.replace('_', ' ')} of the {table_name.removeprefix('tb_')}",
+                    "field_type": self.dg.get_field_type(tableRow),
+                    "pk": self.dg.true_string if tableRow in table_list["pk"] else "",
+                    "ai": self.dg.true_string if tableRow in table_list["pk"] and len(table_list["pk"]) == 1 and "_id" in tableRow.lower() else "",
+                    "fk": self.get_fk(tableRow, table_list, table_id),
+                    "not_null": self.dg.get_is_not_null(tableRow),
+                    "optional": self.dg.get_optional(tableRow),
+                    "description": self.dg.get_description(tableRow,table_name),
                 })
 
     def get_table_rows(self, table_id, table) -> list:
@@ -65,7 +60,7 @@ class DataCreator:
                 for partialRectangle in [i for i in cell if i.get('parent') == tableRow_id]:
                     if "value" in partialRectangle and partialRectangle["value"] != '':
                         cell_str = str(partialRectangle["value"]).lower().strip()
-                        if cell_str == 'pk':
+                        if cell_str == 'pk' or cell_str == 'hk':
                             is_pk = True
                             continue
                         if cell_str == 'fk':
@@ -108,7 +103,7 @@ class DataCreator:
                 return self.fk_from_table(table)
 
             print(f"Table Name does not exist\n")
-            return self.fTG.true_string
+            return self.dg.true_string
         return ""
 
     @staticmethod

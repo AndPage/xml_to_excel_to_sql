@@ -1,11 +1,12 @@
 from src.FileSelectorApp import FileSelectorApp
 from src.XMLReader import XMLReader
 from src.SequenceCreator import SequenceCreator
-from src.DataCreator import DataCreator
+from src.DataTableCreator import DataTableCreator
 from src.DataToExcel import DataToExcel
 from src.ExcelReader import ExcelReader
 from src.SqlCreator import SqlCreator
 from src.DataToSql import DataToSql
+from src.SqlToDb import SqlToDb
 import os
 
 
@@ -19,8 +20,8 @@ def xml_workflow():
     sequenceTableIds = sequenceCreator.getSequence()
     print(sequenceTableIds)
 
-    dataCreator = DataCreator(sequenceTableIds, parsed_xml)
-    data_table = dataCreator.get_table()
+    dataTableCreator = DataTableCreator(sequenceTableIds, parsed_xml)
+    data_table = dataTableCreator.get_table()
 
     dataToExcel = DataToExcel(data_table, selected_file)
     dataToExcel.execute()
@@ -36,6 +37,8 @@ def excel_workflow():
 
     dataToSql = DataToSql(sql_list, selected_file)
     dataToSql.execute()
+
+    sqlToData = SqlToDb(dataToSql.file, dataToSql.full_path_file)
 
 
 if __name__ == "__main__":
