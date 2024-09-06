@@ -13,7 +13,7 @@ class FileSelectorApp(tk.Tk):
         self.title("Dateiauswahl")
 
         self.frame = ttk.Frame(self, padding="10")
-        self.frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        self.frame.grid(row=0, column=0, sticky="n, e, s, w")
 
         self.dir_label = ttk.Label(self.frame, text="Wähle das Ausgangsformat:")
         self.dir_label.grid(row=0, column=0, padx=5, pady=5)
@@ -31,7 +31,8 @@ class FileSelectorApp(tk.Tk):
 
         self.mainloop()
 
-    def list_files(self, directory):
+    @staticmethod
+    def list_files(directory):
         return [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
 
     def on_directory_select(self, event):

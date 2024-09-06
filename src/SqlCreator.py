@@ -88,7 +88,7 @@ class SqlCreator:
         self.sql_data.append(f"{self.tab}SET date_to = CURRENT_TIMESTAMP")
         self.sql_data.append(f"{self.tab}WHERE os_{table_clear_name}_key = NEW.os_{table_clear_name}_key")
         self.sql_data.append(f"{self.tab}AND date_to = '{self.dg.default_date_to}';")
-        # self.sql_data.append(f"{self.tab}LIMIT 1;")   # LIMIT wird von SQLite nicht unterstuetzt, alternative bei grosser Datenbank noetig
+        # self.sql_data.append(f"{self.tab}LIMIT 1;") # LIMIT wird von SQLite nicht unterstützt, alternative bei grosser Datenbank nötig
         self.sql_data.append(f"END;")
         self.sql_data.append(f"")
 

@@ -1,7 +1,5 @@
 import re
 
-from sympy import false
-
 
 class DefaultGenerator:
     true_string = "X"

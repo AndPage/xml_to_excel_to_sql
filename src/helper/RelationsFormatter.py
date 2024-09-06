@@ -2,7 +2,7 @@ class RelationsFormatter:
     tables: list = []
     tableRow: list = []
     partialRectangle: list = []
-    relations: list = []
+    relations = []
 
     def __init__(self, all_dict: dict):
         print(all_dict)
@@ -44,7 +44,8 @@ class RelationsFormatter:
 
         return formatted_relations
 
-    def check_cardinality(self, item):
+    @staticmethod
+    def check_cardinality(item):
         if 'value' not in item or item["value"] == "1":
             print(f"ERROR: check cardinality, source has to be 1:\nitem: {item}\n")
 
@@ -67,7 +68,8 @@ class RelationsFormatter:
 
             print("ERROR: the Arrow has no connection")
 
-    def get_item(self, item, all_source, target):
+    @staticmethod
+    def get_item(item, all_source, target):
 
         copy_item = item.copy()
         removed_value = copy_item.pop("value", None)
