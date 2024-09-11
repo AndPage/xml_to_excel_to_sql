@@ -8,15 +8,15 @@ class DefaultGenerator:
     field_type_pattern = {
         "VARCHAR(10)": [r'^postal_code$', ],
         "TIMESTAMP": [r'_at$', r'birthday', r'date', r'^date_from$', r'^date_to$', r'^create_at$', r'^modify_at$', r'^ts_modify$', r'^ts_create$', ],
-        "REAL": [r'price', r'discount', r'percent', ],
         "INTEGER": [r'_id$', r'_id_dwh$', r'_key$', r'_bk$', r'min$', r'max$', r'count$', r'_nr$', r'number$', r'year$', r'^day$', ],
-        "TEXT": [r'comment', r'description', ],
+        "REAL": [r'price', r'discount', r'percent', r'quantity', ],
+        "TEXT": [r'comment', r'description', r'note', r'info'],
     }
 
     default_is_not_null = ""
     is_not_null_pattern = [
         r'name$',
-        r'_id$',
+        # r'_id$',
         r'_hk$',
         r'_key$',
         r'_id_dwh$',
@@ -42,6 +42,8 @@ class DefaultGenerator:
         "modify_at": "last modify date",
         "date_from": "validity start",
         "date_to": "validity end",
+        "from_at": "validity start",
+        "to_at": "validity end",
     }
 
     def get_field_type(self, field: str) -> str:

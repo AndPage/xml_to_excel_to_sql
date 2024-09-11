@@ -11,8 +11,6 @@ class DataToSql:
         self.file = file.removesuffix(DataToExcel.suffix).removeprefix(DataToExcel.prefix)
         self.full_path_file = f"{os.path.abspath(os.getcwd())}/{self.directory}/{self.file}{self.suffix}"
         print("DataToSql:")
-        print(os.path.abspath(os.getcwd()))
-        print(self.full_path_file)
 
     def execute(self):
         with open(self.full_path_file, 'w') as file:
