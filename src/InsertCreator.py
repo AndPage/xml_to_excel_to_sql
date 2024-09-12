@@ -7,6 +7,7 @@ class InsertCreator:
     substr1: str = "XXX"
     data_field: str = "YYY"
     tab: str = "\t"
+    block_size = 1000
     counter: int = 0
 
     def __init__(self, data_list: dict):
@@ -14,10 +15,9 @@ class InsertCreator:
 
     def set_sql_data(self):
         for table_name, value_list in self.data_list.items():
-            block_size = 1000
-            for i in range(0, len(value_list), block_size):
+            for i in range(0, len(value_list), self.block_size):
                 self.start_insert(table_name, value_list[i])
-                for value in value_list[i:i + block_size]:
+                for value in value_list[i:i + self.block_size]:
                     self.insert_values(value)
                 self.end_insert(table_name)
 
@@ -51,7 +51,7 @@ class InsertCreator:
         self.sql_data.append(f"INSERT INTO {table} ({', '.join(columns)})")
         self.sql_data.append("VALUES")
 
-    def end_insert(self, table_name:str):
+    def end_insert(self, table_name: str):
         self.sql_data[-1] = f"{self.sql_data[-1].rstrip(",")};"
         self.sql_data_dict[f"{str(self.counter).zfill(3)}_{table_name.removeprefix('tb_')}"] = self.sql_data
         self.sql_data = []

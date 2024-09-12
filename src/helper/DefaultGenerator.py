@@ -16,7 +16,7 @@ class DefaultGenerator:
     default_is_not_null = ""
     is_not_null_pattern = [
         r'name$',
-        # r'_id$',
+        r'_id$',
         r'_hk$',
         r'_key$',
         r'_id_dwh$',
