@@ -14,7 +14,6 @@ def xml_workflow():
     reader = XMLReader(os.path.abspath(f"{selected_directory}/{selected_file}"))
     reader.load_xml()
     parsed_xml = reader.getParsedXML()
-    # print(parsed_xml)
 
     sequenceCreator = SequenceCreator(parsed_xml)
     sequenceTableIds = sequenceCreator.getSequence()
@@ -30,7 +29,6 @@ def xml_workflow():
 def excel_workflow():
     excelReader = ExcelReader(os.path.abspath(f"{selected_directory}/{selected_file}"))
     data_dict = excelReader.get_parsed_data_dict()
-    # print(data_dict)
 
     sqlCreator = SqlCreator(data_dict)
     sql_list = sqlCreator.get_sql_data()
@@ -38,7 +36,7 @@ def excel_workflow():
     dataToSql = DataToSql(sql_list, selected_file)
     dataToSql.execute()
 
-    sqlToData = SqlToDb(dataToSql.full_path_file)
+    SqlToDb(dataToSql.full_path_file)
 
 
 if __name__ == "__main__":
